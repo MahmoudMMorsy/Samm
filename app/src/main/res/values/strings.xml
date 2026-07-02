@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">RetroPlay GBA</string>
+
+    <!-- Library Strings -->
+    <string name="library_title">مكتبة الألعاب</string>
+    <string name="scan_games">فحص الألعاب</string>
+    <string name="recent_games">الألعاب المضافة مؤخراً</string>
+    <string name="no_games_found">لم يتم العثور على ألعاب. قم بفحص جهازك لإضافة ألعاب جديدة بصيغة ZIP, GBA, GBC, GB.</string>
+    <string name="fab_add_game">إضافة لعبة</string>
+    
+    <!-- Emulator Strings -->
+    <string name="emulator_quick_save">حفظ سريع</string>
+    <string name="emulator_quick_load">تحميل سريع</string>
+    <string name="emulator_fast_forward">تسريع سريع</string>
+    <string name="emulator_cheats">شفرات الغش</string>
+    <string name="emulator_exit">إنهاء اللعبة</string>
+    
+    <!-- Settings Strings -->
+    <string name="settings_title">الإعدادات</string>
+    <string name="settings_theme">المظهر</string>
+    <string name="settings_theme_dark">الوضع الداكن</string>
+    <string name="settings_theme_light">الوضع الفاتح</string>
+    <string name="settings_controls">وحدة التحكم</string>
+    <string name="settings_controls_customize">تخصيص الأزرار الافتراضية</string>
+    <string name="settings_gamepad">وحدات التحكم المادية (Bluetooth)</string>
+    <string name="settings_graphics">الرسوميات</string>
+    <string name="settings_graphics_resolution">رفع الدقة</string>
+    <string name="settings_graphics_aspect_ratio">تغيير نمط عرض الشاشة</string>
+    
+    <string name="emulator_missing_core">مُحاكي النواة (Core) غير متوفر في هذه البيئة التجريبية. هذا الإصدار يستعرض واجهة المستخدم فقط.</string>
+</resources>

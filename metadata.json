@@ -1,0 +1,6 @@
+{
+  "name": "RetroPlay GBA",
+  "description": "A high-performance Game Boy Advance, Color, and Classic emulator frontend featuring cloud saves, customizable controls, local ROM scanning, and performance tweaks.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
