@@ -6,6 +6,10 @@ data class Game(
     val path: String,
     val type: GameType,
     val thumbnailUri: String? = null,
+    val boxArtUrl: String? = null,
+    val description: String? = null,
+    val genre: String? = null,
+    val rating: Float? = null,
     val sram: String? = null,
     val saveState: String? = null
 )

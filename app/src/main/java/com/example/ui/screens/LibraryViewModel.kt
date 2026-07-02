@@ -71,6 +71,10 @@ class LibraryViewModel(application: Application) : AndroidViewModel(application)
                 path = entity.path,
                 type = GameType.fromExtension(entity.type),
                 thumbnailUri = entity.thumbnailUri,
+                boxArtUrl = entity.boxArtUrl,
+                description = entity.description,
+                genre = entity.genre,
+                rating = entity.rating,
                 sram = entity.sram,
                 saveState = entity.saveState
             )
@@ -147,12 +151,39 @@ class LibraryViewModel(application: Application) : AndroidViewModel(application)
 
     private fun addGame(name: String, path: String, extension: String) {
         viewModelScope.launch {
+            // Mock metadata for cinematic feel
+            val (boxArt, description, genre, rating) = when {
+                name.contains("Tobu", true) -> listOf(
+                    "https://mrombout.github.io/tobu-tobu-girl/img/tobu-tobu-girl-box.png",
+                    "A challenging arcade platformer for the Game Boy. Help the girl rescue her cat by jumping on enemies!",
+                    "Action/Platformer",
+                    4.8f
+                )
+                name.contains("uCity", true) || name.contains("ucity", true) -> listOf(
+                    "https://vhelin.github.io/ucity/img/ucity-boxart.png",
+                    "A complete city building simulator for the Game Boy Color. Manage taxes, zones, and disasters!",
+                    "Simulation",
+                    4.6f
+                )
+                name.contains("Flappy", true) -> listOf(
+                    "https://raw.githubusercontent.com/GrizzlyCove/FlappyBoy/master/screenshot.png",
+                    "A classic flappy bird clone optimized for original 8-bit hardware. Simple but addictive.",
+                    "Arcade",
+                    4.2f
+                )
+                else -> listOf(null, "No description available.", "Unknown", 0f)
+            }
+
             repository.insert(
                 GameEntity(
                     id = UUID.randomUUID().toString(),
                     name = name,
                     path = path,
-                    type = extension
+                    type = extension,
+                    boxArtUrl = boxArt as String?,
+                    description = description as String?,
+                    genre = genre as String?,
+                    rating = rating as Float?
                 )
             )
         }
