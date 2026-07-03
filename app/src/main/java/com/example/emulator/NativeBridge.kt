@@ -14,7 +14,12 @@ class NativeBridge(private val callback: EmulatorCallback) {
     private var videoBitmap: Bitmap? = null
 
     init {
-        System.loadLibrary("retroplay")
+        try {
+            System.loadLibrary("mgba")
+            System.loadLibrary("retroplay")
+        } catch (e: UnsatisfiedLinkError) {
+            Log.e("NativeBridge", "Failed to load native libraries: ${e.message}")
+        }
     }
 
     external fun loadCore(corePath: String): Boolean

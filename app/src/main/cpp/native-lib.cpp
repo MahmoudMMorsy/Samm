@@ -25,25 +25,42 @@ static JNIEnv* getEnv() {
     int status = g_jvm->GetEnv((void**)&env, JNI_VERSION_1_6);
     if (status < 0) {
         status = g_jvm->AttachCurrentThread(&env, NULL);
-        if (status < 0) return NULL;
+        if (status < 0) {
+            LOGE("Failed to attach current thread to JVM");
+            return NULL;
+        }
     }
     return env;
 }
 
 extern "C" JNIEXPORT jint JNICALL
 JNI_OnLoad(JavaVM* vm, void* reserved) {
+    LOGI("JNI_OnLoad starting...");
     g_jvm = vm;
     JNIEnv* env;
     if (vm->GetEnv((void**)&env, JNI_VERSION_1_6) != JNI_OK) {
+        LOGE("Failed to get JNIEnv in JNI_OnLoad");
         return JNI_ERR;
     }
 
+    // Use a safer class lookup
     jclass cls = env->FindClass("com/example/emulator/NativeBridge");
+    if (cls == NULL) {
+        LOGE("FATAL: Failed to find class com/example/emulator/NativeBridge. Check package name!");
+        env->ExceptionClear(); // Clear the NoClassDefFoundError to avoid immediate crash
+        return JNI_VERSION_1_6; // Still return version to avoid load failure, but methods won't work
+    }
+
     g_bridge_class = (jclass)env->NewGlobalRef(cls);
     g_mid_video_frame = env->GetMethodID(g_bridge_class, "onNativeVideoFrame", "([III)V");
     g_mid_audio_samples = env->GetMethodID(g_bridge_class, "onNativeAudioSamples", "([S)V");
     g_mid_input_state = env->GetMethodID(g_bridge_class, "getNativeInputState", "(I)S");
 
+    if (g_mid_video_frame == NULL || g_mid_audio_samples == NULL || g_mid_input_state == NULL) {
+        LOGE("FATAL: Failed to find method IDs in NativeBridge!");
+    }
+
+    LOGI("JNI_OnLoad successful");
     return JNI_VERSION_1_6;
 }
 
@@ -56,8 +73,12 @@ static bool env_callback(unsigned cmd, void *data) {
             return true;
         }
         case RETRO_ENVIRONMENT_GET_CAN_DUPE:
-            *(bool*)data = true;
+            if (data) *(bool*)data = true;
             return true;
+        case RETRO_ENVIRONMENT_GET_LOG_INTERFACE: {
+             // Optional: provide logger to the core
+             return false;
+        }
         default:
             return false;
     }
@@ -81,6 +102,7 @@ static void video_refresh_callback(const void *data, unsigned width, unsigned he
 
     jint *pixels = env->GetIntArrayElements(g_pixel_array, NULL);
     const uint16_t *src = (const uint16_t*)data;
+    // Assuming RGB565 and no padding for now (typical for GBA cores)
     for (int i = 0; i < size; i++) {
         uint16_t p = src[i];
         uint32_t r = ((p >> 11) & 0x1F) << 3;
@@ -94,6 +116,7 @@ static void video_refresh_callback(const void *data, unsigned width, unsigned he
 }
 
 static size_t audio_sample_batch_callback(const int16_t *data, size_t frames) {
+    if (frames == 0) return 0;
     JNIEnv *env = getEnv();
     if (!env || !g_obj || !g_mid_audio_samples) return frames;
 
@@ -123,6 +146,7 @@ static int16_t input_state_callback(unsigned port, unsigned device, unsigned ind
 
 extern "C" JNIEXPORT jboolean JNICALL
 Java_com_example_emulator_NativeBridge_loadCore(JNIEnv *env, jobject obj, jstring corePath) {
+    LOGI("loadCore starting...");
     if (g_obj) env->DeleteGlobalRef(g_obj);
     g_obj = env->NewGlobalRef(obj);
 
@@ -138,18 +162,22 @@ Java_com_example_emulator_NativeBridge_loadCore(JNIEnv *env, jobject obj, jstrin
     enum retro_pixel_format fmt = RETRO_PIXEL_FORMAT_RGB565;
     env_callback(RETRO_ENVIRONMENT_SET_PIXEL_FORMAT, &fmt);
 
+    LOGI("loadCore successful");
     return JNI_TRUE;
 }
 
 extern "C" JNIEXPORT jboolean JNICALL
 Java_com_example_emulator_NativeBridge_loadGame(JNIEnv *env, jobject obj, jstring gamePath) {
+    if (gamePath == NULL) return JNI_FALSE;
     const char *path = env->GetStringUTFChars(gamePath, NULL);
+    LOGI("loadGame: %s", path);
     struct retro_game_info info = {0};
     info.path = path;
 
     bool success = retro_load_game(&info);
 
     env->ReleaseStringUTFChars(gamePath, path);
+    LOGI("loadGame result: %d", success);
     return success ? JNI_TRUE : JNI_FALSE;
 }
 
