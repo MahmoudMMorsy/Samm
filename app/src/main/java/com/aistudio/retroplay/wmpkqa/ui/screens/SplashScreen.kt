@@ -1,4 +1,4 @@
-package com.example.ui.screens
+package com.aistudio.retroplay.wmpkqa.ui.screens
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween

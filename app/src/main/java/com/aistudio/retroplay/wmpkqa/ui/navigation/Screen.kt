@@ -1,4 +1,4 @@
-package com.example.ui.navigation
+package com.aistudio.retroplay.wmpkqa.ui.navigation
 
 sealed class Screen(val route: String) {
     object Splash : Screen("splash")

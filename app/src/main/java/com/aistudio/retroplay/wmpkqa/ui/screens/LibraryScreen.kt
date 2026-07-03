@@ -1,4 +1,4 @@
-package com.example.ui.screens
+package com.aistudio.retroplay.wmpkqa.ui.screens
 
 import android.content.Intent
 import android.net.Uri
@@ -32,9 +32,9 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
-import com.example.R
-import com.example.model.Game
-import com.example.model.GameType
+import com.aistudio.retroplay.wmpkqa.R
+import com.aistudio.retroplay.wmpkqa.model.Game
+import com.aistudio.retroplay.wmpkqa.model.GameType
 
 // Retro Synthwave Cyber Colors
 val SynthObsidian = Color(0xFF030305)

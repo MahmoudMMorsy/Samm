@@ -1,15 +1,15 @@
-package com.example.ui.screens
+package com.aistudio.retroplay.wmpkqa.ui.screens
 
 import android.app.Application
 import android.net.Uri
 import android.provider.OpenableColumns
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.data.AppDatabase
-import com.example.data.GameEntity
-import com.example.data.GameRepository
-import com.example.model.Game
-import com.example.model.GameType
+import com.aistudio.retroplay.wmpkqa.data.AppDatabase
+import com.aistudio.retroplay.wmpkqa.data.GameEntity
+import com.aistudio.retroplay.wmpkqa.data.GameRepository
+import com.aistudio.retroplay.wmpkqa.model.Game
+import com.aistudio.retroplay.wmpkqa.model.GameType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

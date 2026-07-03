@@ -1,4 +1,4 @@
-package com.example.model
+package com.aistudio.retroplay.wmpkqa.model
 
 data class Game(
     val id: String,

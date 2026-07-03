@@ -1,4 +1,4 @@
-package com.example.emulator
+package com.aistudio.retroplay.wmpkqa.emulator
 
 import android.graphics.Bitmap
 import android.media.AudioAttributes

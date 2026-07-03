@@ -44,9 +44,9 @@ JNI_OnLoad(JavaVM* vm, void* reserved) {
     }
 
     // Use a safer class lookup
-    jclass cls = env->FindClass("com/example/emulator/NativeBridge");
+    jclass cls = env->FindClass("com/aistudio/retroplay/wmpkqa/emulator/NativeBridge");
     if (cls == NULL) {
-        LOGE("FATAL: Failed to find class com/example/emulator/NativeBridge. Check package name!");
+        LOGE("FATAL: Failed to find class com/aistudio/retroplay/wmpkqa/emulator/NativeBridge. Check package name!");
         env->ExceptionClear(); // Clear the NoClassDefFoundError to avoid immediate crash
         return JNI_VERSION_1_6; // Still return version to avoid load failure, but methods won't work
     }
@@ -145,7 +145,7 @@ static int16_t input_state_callback(unsigned port, unsigned device, unsigned ind
 }
 
 extern "C" JNIEXPORT jboolean JNICALL
-Java_com_example_emulator_NativeBridge_loadCore(JNIEnv *env, jobject obj, jstring corePath) {
+Java_com_aistudio_retroplay_wmpkqa_emulator_NativeBridge_loadCore(JNIEnv *env, jobject obj, jstring corePath) {
     LOGI("loadCore starting...");
     if (g_obj) env->DeleteGlobalRef(g_obj);
     g_obj = env->NewGlobalRef(obj);
@@ -167,7 +167,7 @@ Java_com_example_emulator_NativeBridge_loadCore(JNIEnv *env, jobject obj, jstrin
 }
 
 extern "C" JNIEXPORT jboolean JNICALL
-Java_com_example_emulator_NativeBridge_loadGame(JNIEnv *env, jobject obj, jstring gamePath) {
+Java_com_aistudio_retroplay_wmpkqa_emulator_NativeBridge_loadGame(JNIEnv *env, jobject obj, jstring gamePath) {
     if (gamePath == NULL) return JNI_FALSE;
     const char *path = env->GetStringUTFChars(gamePath, NULL);
     LOGI("loadGame: %s", path);
@@ -182,17 +182,17 @@ Java_com_example_emulator_NativeBridge_loadGame(JNIEnv *env, jobject obj, jstrin
 }
 
 extern "C" JNIEXPORT void JNICALL
-Java_com_example_emulator_NativeBridge_runFrame(JNIEnv *env, jobject obj) {
+Java_com_aistudio_retroplay_wmpkqa_emulator_NativeBridge_runFrame(JNIEnv *env, jobject obj) {
     retro_run();
 }
 
 extern "C" JNIEXPORT void JNICALL
-Java_com_example_emulator_NativeBridge_reset(JNIEnv *env, jobject obj) {
+Java_com_aistudio_retroplay_wmpkqa_emulator_NativeBridge_reset(JNIEnv *env, jobject obj) {
     retro_reset();
 }
 
 extern "C" JNIEXPORT void JNICALL
-Java_com_example_emulator_NativeBridge_stop(JNIEnv *env, jobject obj) {
+Java_com_aistudio_retroplay_wmpkqa_emulator_NativeBridge_stop(JNIEnv *env, jobject obj) {
     retro_unload_game();
     retro_deinit();
 
@@ -208,7 +208,7 @@ Java_com_example_emulator_NativeBridge_stop(JNIEnv *env, jobject obj) {
 }
 
 extern "C" JNIEXPORT jbyteArray JNICALL
-Java_com_example_emulator_NativeBridge_saveState(JNIEnv *env, jobject obj) {
+Java_com_aistudio_retroplay_wmpkqa_emulator_NativeBridge_saveState(JNIEnv *env, jobject obj) {
     size_t size = retro_serialize_size();
     if (size == 0) return NULL;
 
@@ -221,7 +221,7 @@ Java_com_example_emulator_NativeBridge_saveState(JNIEnv *env, jobject obj) {
 }
 
 extern "C" JNIEXPORT jboolean JNICALL
-Java_com_example_emulator_NativeBridge_loadState(JNIEnv *env, jobject obj, jbyteArray state) {
+Java_com_aistudio_retroplay_wmpkqa_emulator_NativeBridge_loadState(JNIEnv *env, jobject obj, jbyteArray state) {
     if (state == NULL) return JNI_FALSE;
     jsize size = env->GetArrayLength(state);
     jbyte *data = env->GetByteArrayElements(state, NULL);

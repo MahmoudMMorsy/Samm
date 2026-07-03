@@ -1,4 +1,4 @@
-package com.example.ui.screens
+package com.aistudio.retroplay.wmpkqa.ui.screens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -14,7 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.example.R
+import com.aistudio.retroplay.wmpkqa.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

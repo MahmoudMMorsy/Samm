@@ -1,4 +1,4 @@
-package com.example.ui.screens
+package com.aistudio.retroplay.wmpkqa.ui.screens
 
 import android.graphics.Bitmap
 import androidx.compose.foundation.Image
@@ -23,8 +23,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.emulator.EmulatorViewModel
-import com.example.model.Game
+import com.aistudio.retroplay.wmpkqa.emulator.EmulatorViewModel
+import com.aistudio.retroplay.wmpkqa.model.Game
 import java.io.File
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -37,7 +37,7 @@ fun EmulatorScreen(
 ) {
     val gamesList by libraryViewModel.games.collectAsStateWithLifecycle()
     val currentGame = remember(gamesList, gameId) { gamesList.find { it.id == gameId } }
-    
+
     LaunchedEffect(currentGame) {
         currentGame?.let {
             emulatorViewModel.startEmulator(it.path)
@@ -47,7 +47,7 @@ fun EmulatorScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { 
+                title = {
                     Text(
                         text = currentGame?.name ?: "EMULATOR",
                         fontFamily = FontFamily.Monospace,

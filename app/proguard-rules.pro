@@ -5,11 +5,11 @@
 # For more details, see
 #   http://developer.android.com/guide/developing/tools/proguard.html
 
--keep class com.example.emulator.NativeBridge {
+-keep class com.aistudio.retroplay.wmpkqa.emulator.NativeBridge {
     *;
 }
 
--keepclassmembers class com.example.emulator.NativeBridge {
+-keepclassmembers class com.aistudio.retroplay.wmpkqa.emulator.NativeBridge {
     *** onNativeVideoFrame(...);
     *** getNativeInputState(...);
 }

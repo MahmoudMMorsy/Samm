@@ -1,4 +1,4 @@
-package com.example.ui.navigation
+package com.aistudio.retroplay.wmpkqa.ui.navigation
 
 import android.net.Uri
 import androidx.compose.runtime.Composable
@@ -7,10 +7,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.ui.screens.EmulatorScreen
-import com.example.ui.screens.LibraryScreen
-import com.example.ui.screens.SettingsScreen
-import com.example.ui.screens.SplashScreen
+import com.aistudio.retroplay.wmpkqa.ui.screens.EmulatorScreen
+import com.aistudio.retroplay.wmpkqa.ui.screens.LibraryScreen
+import com.aistudio.retroplay.wmpkqa.ui.screens.SettingsScreen
+import com.aistudio.retroplay.wmpkqa.ui.screens.SplashScreen
 
 @Composable
 fun AppNavigation() {
