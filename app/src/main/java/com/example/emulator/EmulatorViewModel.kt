@@ -1,6 +1,9 @@
 package com.example.emulator
 
 import android.graphics.Bitmap
+import android.media.AudioAttributes
+import android.media.AudioFormat
+import android.media.AudioTrack
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -15,6 +18,7 @@ import kotlinx.coroutines.launch
 class EmulatorViewModel : ViewModel(), NativeBridge.EmulatorCallback {
 
     private var bridge: NativeBridge? = null
+    private var audioTrack: AudioTrack? = null
     var gameBitmap by mutableStateOf<Bitmap?>(null)
     private var emulatorJob: Job? = null
 
@@ -25,6 +29,22 @@ class EmulatorViewModel : ViewModel(), NativeBridge.EmulatorCallback {
 
     fun startEmulator(gamePath: String) {
         bridge = NativeBridge(this)
+
+        audioTrack = AudioTrack.Builder()
+            .setAudioAttributes(AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_GAME)
+                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                .build())
+            .setAudioFormat(AudioFormat.Builder()
+                .setEncoding(AudioFormat.ENCODING_PCM_16BIT)
+                .setSampleRate(44100)
+                .setChannelMask(AudioFormat.CHANNEL_OUT_STEREO)
+                .build())
+            .setBufferSizeInBytes(8192)
+            .setTransferMode(AudioTrack.MODE_STREAM)
+            .build()
+        audioTrack?.play()
+
         bridge?.loadCore("") // Path not needed for static link
         bridge?.loadGame(gamePath)
 
@@ -62,6 +82,10 @@ class EmulatorViewModel : ViewModel(), NativeBridge.EmulatorCallback {
         gameBitmap = bitmap
     }
 
+    override fun onAudioSamples(samples: ShortArray) {
+        audioTrack?.write(samples, 0, samples.size)
+    }
+
     override fun getInputState(buttonId: Int): Short {
         return inputState[buttonId] ?: 0
     }
@@ -70,5 +94,7 @@ class EmulatorViewModel : ViewModel(), NativeBridge.EmulatorCallback {
         super.onCleared()
         emulatorJob?.cancel()
         bridge?.stop()
+        audioTrack?.stop()
+        audioTrack?.release()
     }
 }

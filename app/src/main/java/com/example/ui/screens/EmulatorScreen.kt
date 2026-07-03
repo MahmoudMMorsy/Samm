@@ -13,6 +13,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -81,7 +82,20 @@ fun EmulatorScreen(
                     Image(
                         bitmap = bitmap.asImageBitmap(),
                         contentDescription = null,
-                        modifier = Modifier.fillMaxSize(),
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .drawWithContent {
+                                drawContent()
+                                // Scanline Shader Effect
+                                for (i in 0 until size.height.toInt() step 4) {
+                                    drawLine(
+                                        color = Color.Black.copy(alpha = 0.3f),
+                                        start = androidx.compose.ui.geometry.Offset(0f, i.toFloat()),
+                                        end = androidx.compose.ui.geometry.Offset(size.width, i.toFloat()),
+                                        strokeWidth = 2f
+                                    )
+                                }
+                            },
                         contentScale = ContentScale.Fit
                     )
                 } ?: CircularProgressIndicator(color = Color(0xFF39FF14))

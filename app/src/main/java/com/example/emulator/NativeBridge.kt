@@ -7,6 +7,7 @@ class NativeBridge(private val callback: EmulatorCallback) {
 
     interface EmulatorCallback {
         fun onVideoFrame(bitmap: Bitmap)
+        fun onAudioSamples(samples: ShortArray)
         fun getInputState(buttonId: Int): Short
     }
 
@@ -29,6 +30,10 @@ class NativeBridge(private val callback: EmulatorCallback) {
         }
         videoBitmap?.setPixels(pixelData, 0, width, 0, 0, width, height)
         videoBitmap?.let { callback.onVideoFrame(it) }
+    }
+
+    fun onNativeAudioSamples(samples: ShortArray) {
+        callback.onAudioSamples(samples)
     }
 
     fun getNativeInputState(buttonId: Int): Short {
