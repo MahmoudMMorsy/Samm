@@ -28,7 +28,7 @@ if (base64File.exists() && !keystoreFile.exists()) {
 }
 
 android {
-  namespace = "com.example"
+  namespace = "com.aistudio.retroplay.wmpkqa"
   compileSdk = 35
 
   defaultConfig {
