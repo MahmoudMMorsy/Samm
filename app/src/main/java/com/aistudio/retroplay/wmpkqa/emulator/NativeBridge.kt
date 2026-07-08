@@ -27,6 +27,8 @@ class NativeBridge(private val callback: EmulatorCallback) {
     external fun runFrame()
     external fun reset()
     external fun stop()
+    external fun saveState(): ByteArray?
+    external fun loadState(state: ByteArray): Boolean
 
     // JNI Callbacks
     fun onNativeVideoFrame(pixelData: IntArray, width: Int, height: Int) {
